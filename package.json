@@ -113,7 +113,8 @@
     "xdg-basedir": "^4.0.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
