@@ -1,13 +1,14 @@
 let express = require('express')
 const exphbs  = require('express-handlebars');
+const bodyParser = require('body-parser');
 
 // const SettingsBill = require('./settingsBill');
 const handlebarSetup = exphbs({
     partialsDir: "./views/partials",
     viewPath: './views',
     layoutsDir: './views/layouts'
-    }); 
-
+    });
+    
 const settingsBill = require('./settingsBill');
 
 let app =  express()
@@ -16,6 +17,10 @@ let PORT = process.env.PORT || 3011;
 
 app.engine('handlebars', handlebarSetup);
 app.set('view engine', 'handlebars');
+
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json());
 
 app.use(express.static('public'));
 
