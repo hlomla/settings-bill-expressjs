@@ -110,6 +110,7 @@ module.exports = function SettingsBill() {
         const total = grandTotal();
         return total >= criticalLevel;
     }
+   
 
     return {
         setSettings,
@@ -119,6 +120,6 @@ module.exports = function SettingsBill() {
         actionsFor,
         totals,
         hasReachedWarningLevel,
-        hasReachedCriticalLevel
+        hasReachedCriticalLevel,
     }
 }

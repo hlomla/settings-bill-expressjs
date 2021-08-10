@@ -1,7 +1,8 @@
 let express = require('express')
 const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
-
+const moment = require('moment');
+moment().format();
 // const SettingsBill = require('./settingsBill');
 const handlebarSetup = exphbs({
     partialsDir: "./views/partials",
@@ -13,7 +14,7 @@ const settingsBill = require('./settingsBill');
 
 let app =  express()
 const SettingsBILL = settingsBill()
-let PORT = process.env.PORT || 3011;
+let PORT = process.env.PORT || 3015;
 
 app.engine('handlebars', handlebarSetup);
 app.set('view engine', 'handlebars');
@@ -25,7 +26,19 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 app.get('/', function(req, res){
+    let levelsReached = "";
+
+    if(SettingsBILL.hasReachedWarningLevel()){
+        levelsReached = 'warning'
+        }
+        if(SettingsBILL.hasReachedCriticalLevel()){
+            levelsReached = 'danger'
+        }
+
     res.render('index', {settings: SettingsBILL.getSettings(), 
+    totals: SettingsBILL.totals(),  
+    colourLevel: levelsReached
+      
         })
 });
 
@@ -43,15 +56,25 @@ app.post('/settings', function(req, res){
 });
 
 app.post('/action', function(req, res){
-    
+    SettingsBILL.recordAction(req.body.actionType);
+    res.redirect('/')
 });
 
 app.get('/actions', function(req, res){
-    
+    let assignSet =  SettingsBILL.actions()
+    assignSet.forEach(element => {
+        element.actionTimestamp = moment(element.timestamp).fromNow()
+    })
+    res.render('actions', {actions: assignSet})
 });
 
-app.get('/actions/:type', function(req, res){
-    
+app.get('/actions/:actionType', function(req, res){
+    let actionType = req.params.actionType;
+    let assignTime = SettingsBILL.actionsFor(actionType)
+    assignTime.forEach(element => {
+        element.actionTimestamp = moment(element.timestamp).fromNow()
+    })
+    res.render('actions', {actions: assignTime})
 });
 
 app.listen(PORT, function(){
