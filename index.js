@@ -15,7 +15,6 @@ const { reset } = require('nodemon');
 
 let app =  express()
 const SettingsBILL = settingsBill()
-let PORT = process.env.PORT || 3015;
 
 app.engine('handlebars', handlebarSetup);
 app.set('view engine', 'handlebars');
@@ -78,6 +77,7 @@ app.get('/actions/:actionType', function(req, res){
 });
 
 // app.get('/reset', resetBtn.reset());
+let PORT = process.env.PORT || 3015;
 
 app.listen(PORT, function(){
     console.log("App started at PORT: ", PORT);
