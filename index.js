@@ -11,6 +11,7 @@ const handlebarSetup = exphbs({
     });
     
 const settingsBill = require('./settingsBill');
+const { reset } = require('nodemon');
 
 let app =  express()
 const SettingsBILL = settingsBill()
@@ -45,7 +46,6 @@ app.get('/', function(req, res){
 app.post('/settings', function(req, res){
 
     SettingsBILL.setSettings({
-
         callCost: req.body.callCost,
         smsCost: req.body.smsCost,
         warningLevel: req.body.warningLevel,
@@ -76,6 +76,8 @@ app.get('/actions/:actionType', function(req, res){
     })
     res.render('actions', {actions: assignTime})
 });
+
+// app.get('/reset', resetBtn.reset());
 
 app.listen(PORT, function(){
     console.log("App started at PORT: ", PORT);
