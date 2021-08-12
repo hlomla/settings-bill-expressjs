@@ -1,6 +1,10 @@
 let express = require('express')
 const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
+const settingsBill = require('./settingsBill');
+const SettingsBILL = settingsBill()
+let app =  express()
+
 const moment = require('moment');
 moment().format();
 // const SettingsBill = require('./settingsBill');
@@ -9,15 +13,12 @@ const handlebarSetup = exphbs({
     viewPath: './views',
     layoutsDir: './views/layouts'
     });
-    
-const settingsBill = require('./settingsBill');
-const { reset } = require('nodemon');
-
-let app =  express()
-const SettingsBILL = settingsBill()
 
 app.engine('handlebars', handlebarSetup);
 app.set('view engine', 'handlebars');
+    
+ const { reset } = require('nodemon');
+
 
 
 app.use(bodyParser.urlencoded({ extended: false }))
